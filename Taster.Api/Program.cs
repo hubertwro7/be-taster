@@ -1,4 +1,5 @@
 using Serilog;
+using Taster.Infrastructure.Persistance;
 
 namespace Taster.Api
 {
@@ -25,6 +26,8 @@ namespace Taster.Api
 
             // Add services to the container.
 
+
+            builder.Services.AddSqlDatabase(builder.Configuration.GetConnectionString("MainDbSql")!);
             builder.Services.AddControllers();
 
             var app = builder.Build();
