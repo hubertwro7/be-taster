@@ -1,4 +1,5 @@
 using Serilog;
+using Taster.Api.Middlewares;
 using Taster.Application.Logic.Abstractions;
 using Taster.Infrastructure.Persistance;
 
@@ -42,6 +43,8 @@ namespace Taster.Api
             });
 
             var app = builder.Build();
+
+            app.UseExceptionResultMiddleware();
 
             // Configure the HTTP request pipeline.
 
