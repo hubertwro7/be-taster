@@ -1,4 +1,5 @@
 using Serilog;
+using Taster.Application.Logic.Abstractions;
 using Taster.Infrastructure.Persistance;
 
 namespace Taster.Api
@@ -34,6 +35,11 @@ namespace Taster.Api
 
             builder.Services.AddSqlDatabase(builder.Configuration.GetConnectionString("MainDbSql")!);
             builder.Services.AddControllers();
+
+            builder.Services.AddMediatR(x =>
+            {
+                x.RegisterServicesFromAssemblyContaining(typeof(BaseCommandHandler));
+            });
 
             var app = builder.Build();
 
