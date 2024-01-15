@@ -2,6 +2,7 @@ using Serilog;
 using Taster.Api.Middlewares;
 using Taster.Application.Logic.Abstractions;
 using Taster.Infrastructure.Persistance;
+using Taster.Application;
 
 namespace Taster.Api
 {
@@ -41,6 +42,8 @@ namespace Taster.Api
             {
                 x.RegisterServicesFromAssemblyContaining(typeof(BaseCommandHandler));
             });
+
+            builder.Services.AddApplication();
 
             var app = builder.Build();
 
