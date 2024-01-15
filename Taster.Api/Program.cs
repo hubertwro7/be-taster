@@ -1,7 +1,7 @@
 using Serilog;
 using Taster.Api.Middlewares;
 using Taster.Application.Logic.Abstractions;
-using Taster.Infrastructure.Persistance;
+using Taster.Infrastructure.Persistence;
 using Taster.Application;
 
 namespace Taster.Api
@@ -32,9 +32,7 @@ namespace Taster.Api
                 .ReadFrom.Services(services)
                 .Enrich.FromLogContext());
 
-            // Add services to the container.
-
-
+            builder.Services.AddDatabaseCache();
             builder.Services.AddSqlDatabase(builder.Configuration.GetConnectionString("MainDbSql")!);
             builder.Services.AddControllers();
 
@@ -49,10 +47,7 @@ namespace Taster.Api
 
             app.UseExceptionResultMiddleware();
 
-            // Configure the HTTP request pipeline.
-
             app.UseAuthorization();
-
 
             app.MapControllers();
 

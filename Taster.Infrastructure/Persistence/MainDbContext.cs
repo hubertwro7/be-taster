@@ -2,7 +2,7 @@
 using Taster.Application.Interfaces;
 using Taster.Domain.Entities;
 
-namespace Taster.Infrastructure.Persistance
+namespace Taster.Infrastructure.Persistence
 {
     internal class MainDbContext : DbContext, IApplicationDbContext
     {

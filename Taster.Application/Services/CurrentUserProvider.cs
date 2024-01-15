@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EFCoreSecondLevelCacheInterceptor;
+using Microsoft.EntityFrameworkCore;
 using Taster.Application.Exceptions;
 using Taster.Application.Interfaces;
 using Taster.Domain.Entities;
@@ -22,7 +23,7 @@ namespace Taster.Application.Services
             {
                 throw new UnauthorizedException();
             }
-            var user = await applicationDbContext.Users.FirstOrDefaultAsync(x => x.Id == userId.Value);
+            var user = await applicationDbContext.Users.Cacheable().FirstOrDefaultAsync(x => x.Id == userId.Value);
             if(user == null)
             {
                 throw new ErrorException("UserDoesNotExist");

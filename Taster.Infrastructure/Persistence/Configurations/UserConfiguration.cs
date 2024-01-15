@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Taster.Domain.Entities;
 
-namespace Taster.Infrastructure.Persistance.Configurations
+namespace Taster.Infrastructure.Persistence.Configurations
 {
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {
