@@ -54,7 +54,11 @@ namespace Taster.Infrastructure.Auth
 
         public bool ValidateToken(string token)
         {
-            if(string.IsNullOrEmpty(token)) return false;
+            if (string.IsNullOrEmpty(token)) 
+            {
+                return false;
+            }
+
             var mySecurityKey = GetSecurityKey();
 
             var tokenHandler = new JwtSecurityTokenHandler();   
@@ -72,8 +76,24 @@ namespace Taster.Infrastructure.Auth
                 }, out SecurityToken validatedToken);
             }
             catch
-            { return false; }
+            { 
+                return false;
+            }
+
             return true;
+        }
+
+        public string? GetClaim(string token, string claimType)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var securityToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+            if(securityToken == null) 
+            {
+                return null;
+            }
+
+            var stringClaimValue = securityToken.Claims.FirstOrDefault(claim => claim.Type == claimType)?.Value;
+            return stringClaimValue;
         }
     }
 }
