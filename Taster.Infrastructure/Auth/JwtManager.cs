@@ -71,7 +71,9 @@ namespace Taster.Infrastructure.Auth
                     IssuerSigningKey = mySecurityKey,
                 }, out SecurityToken validatedToken);
             }
-            cat
+            catch
+            { return false; }
+            return true;
         }
     }
 }
