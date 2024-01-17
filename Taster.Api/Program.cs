@@ -4,6 +4,7 @@ using Taster.Application.Logic.Abstractions;
 using Taster.Infrastructure.Persistence;
 using Taster.Application;
 using Taster.Infrastructure.Auth;
+using Taster.Api.Application.Auth;
 
 namespace Taster.Api
 {
@@ -33,10 +34,12 @@ namespace Taster.Api
                 .ReadFrom.Services(services)
                 .Enrich.FromLogContext());
 
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddDatabaseCache();
             builder.Services.AddSqlDatabase(builder.Configuration.GetConnectionString("MainDbSql")!);
             builder.Services.AddControllers();
             builder.Services.AddJwtAuth(builder.Configuration);
+            builder.Services.AddJwtAuthenticationDataProvider(builder.Configuration);
 
             builder.Services.AddMediatR(x =>
             {
