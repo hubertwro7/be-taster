@@ -47,7 +47,8 @@ namespace Taster.Api
                 x.RegisterServicesFromAssemblyContaining(typeof(BaseCommandHandler));
             });
 
-            builder.Services.AddApplication();
+            builder.Services.AddApplicationServices();
+            builder.Services.AddValidators();
 
             var app = builder.Build();
 

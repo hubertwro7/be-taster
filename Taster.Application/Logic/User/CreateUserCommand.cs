@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Taster.Application.Exceptions;
 using Taster.Application.Interfaces;
@@ -55,6 +56,22 @@ namespace Taster.Application.Logic.User
                 {
                     UserId = user.Id,
                 };
+            }
+        }
+
+        public class Validator : AbstractValidator<Request> 
+        {
+            public Validator() 
+            {
+                RuleFor(x => x.Email).NotEmpty();
+                RuleFor(x => x.Email).EmailAddress();
+                RuleFor(x => x.Email).MaximumLength(100);
+
+                RuleFor(x => x.Password).NotEmpty();
+                RuleFor(x => x.Password).MaximumLength(50);
+
+                RuleFor(x => x.Username).NotEmpty();
+                RuleFor(x => x.Username).MaximumLength(20);
             }
         }
     }
