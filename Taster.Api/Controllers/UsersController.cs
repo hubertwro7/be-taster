@@ -8,11 +8,11 @@ namespace Taster.Api.Controllers
     [ApiController]
     public class UsersController : BaseController
     {
-        public UsersController(ILogger logger, IMediator mediator) : base(logger, mediator)
+        public UsersController(ILogger<UsersController> logger, IMediator mediator) : base(logger, mediator)
         {
         }
 
-        [HttpPost("add")]
+        [HttpPost("Add")]
         public async Task<ActionResult> CreateUser([FromBody] CreateUserCommand.Request model)
         {
             var createUserResult = await mediator.Send(model);

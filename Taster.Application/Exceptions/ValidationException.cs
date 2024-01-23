@@ -8,5 +8,6 @@
         {
             public required string FieldName { get; set; }
             public required string Error { get; set; }
+        }
     }
 }

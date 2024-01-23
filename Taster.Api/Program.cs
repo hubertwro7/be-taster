@@ -50,7 +50,27 @@ namespace Taster.Api
             builder.Services.AddApplicationServices();
             builder.Services.AddValidators();
 
+            builder.Services.AddSwaggerGen(x =>
+            {
+                x.CustomSchemaIds(y =>
+                {
+                    var name = y.FullName;
+                    if (name != null)
+                    {
+                        name = name.Replace("+", "_");
+                    }
+
+                    return name;
+                });
+            });
+
             var app = builder.Build();
+
+            if(app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
 
             app.UseExceptionResultMiddleware();
 
