@@ -40,6 +40,16 @@ namespace Taster.Api.Controllers
             return Ok(new JwtToken() { AccessToken = token });
         }
 
+        [HttpPost("logout")]
+        public async Task<ActionResult> Logout()
+        {
+            var logoutResult = await mediator.Send(new LogoutCommand.Request());
+            DeleteTokenCookie();
+            return Ok(logoutResult);
+        }
+
+
+
         private void SetTokenCookie(string token)
         {
             var cookieOption = new CookieOptions()
@@ -62,6 +72,14 @@ namespace Taster.Api.Controllers
             }
 
             Response.Cookies.Append(CookieSettings.CookieName, token, cookieOption);
+        }
+
+        private void DeleteTokenCookie()
+        {
+            Response.Cookies.Delete(CookieSettings.CookieName, new CookieOptions()
+            {
+                HttpOnly = true
+            });
         }
     }
 }
