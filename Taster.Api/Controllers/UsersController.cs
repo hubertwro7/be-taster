@@ -31,7 +31,7 @@ namespace Taster.Api.Controllers
             return Ok(new JwtToken() { AccessToken = token });
         }
 
-        [HttpPost("login")]
+        [HttpPost("/auth/login")]
         public async Task<ActionResult> Login([FromBody] LoginCommand.Request model)
         {
             var loginResult = await mediator.Send(model);
@@ -40,12 +40,19 @@ namespace Taster.Api.Controllers
             return Ok(new JwtToken() { AccessToken = token });
         }
 
-        [HttpPost("logout")]
+        [HttpPost("/auth/logout")]
         public async Task<ActionResult> Logout()
         {
             var logoutResult = await mediator.Send(new LogoutCommand.Request());
             DeleteTokenCookie();
             return Ok(logoutResult);
+        }
+
+        [HttpGet("current-user")]
+        public async Task<ActionResult> GetCurrentUser()
+        {
+            var data = await mediator.Send(new CurrentUserQuery.Request() { });    
+            return Ok(data);
         }
 
 

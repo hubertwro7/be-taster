@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Taster.Application.Exceptions;
 using Taster.Application.Interfaces;
 using Taster.Application.Logic.Abstractions;
-using Taster.Domain.Entities;
 
 namespace Taster.Application.Logic.User
 {
