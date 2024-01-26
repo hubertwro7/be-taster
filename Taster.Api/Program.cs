@@ -64,6 +64,8 @@ namespace Taster.Api
                 });
             });
 
+            builder.Services.AddCors();
+
             var app = builder.Build();
 
             if(app.Environment.IsDevelopment())
@@ -71,6 +73,14 @@ namespace Taster.Api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseCors(builder => builder
+            .WithOrigins(app.Configuration.GetValue<string>("WebAppBaseUrl") ?? "")
+            .WithOrigins(app.Configuration.GetSection("AdditionalCorsOrigins").Get<string[]>() ?? new string[0])
+            .WithOrigins((Environment.GetEnvironmentVariable("AdditionalCorsOrigins") ?? "").Split(",").Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim()).ToArray())
+            .AllowAnyHeader()
+            .AllowCredentials()
+            .AllowAnyMethod());
 
             app.UseExceptionResultMiddleware();
 
