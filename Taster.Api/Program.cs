@@ -6,6 +6,7 @@ using Taster.Application;
 using Taster.Infrastructure.Auth;
 using Taster.Api.Application.Auth;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
 
 namespace Taster.Api
 {
@@ -44,6 +45,9 @@ namespace Taster.Api
                 {
                     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 }
+            }).AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
             builder.Services.AddJwtAuth(builder.Configuration);
             builder.Services.AddJwtAuthenticationDataProvider(builder.Configuration);
