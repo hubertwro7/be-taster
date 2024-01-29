@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Taster.Api.Application.Auth;
@@ -15,14 +16,17 @@ namespace Taster.Api.Controllers
     {
         private readonly CookieSettings? cookieSettings;
         private readonly JwtManager jwtManager;
+        private readonly IAntiforgery antiForgery;
 
-        public UsersController(ILogger<UsersController> logger, IMediator mediator, IOptions<CookieSettings> cookieSettings, JwtManager jwtManager) : base(logger, mediator)
+        public UsersController(ILogger<UsersController> logger, IMediator mediator, IOptions<CookieSettings> cookieSettings, JwtManager jwtManager, IAntiforgery antiForgery) : base(logger, mediator)
         {
             this.cookieSettings = cookieSettings != null ? cookieSettings.Value : null;
             this.jwtManager = jwtManager;
+            this.antiForgery = antiForgery;
         }
 
         [HttpPost("add")]
+        [IgnoreAntiforgeryToken]
         public async Task<ActionResult> CreateUser([FromBody] CreateUserCommand.Request model)
         {
             var createUserResult = await mediator.Send(model);
@@ -55,6 +59,12 @@ namespace Taster.Api.Controllers
             return Ok(data);
         }
 
+        [HttpGet("anti-forgery-token")]
+        public async Task<ActionResult> GetAntiForgeryToken()
+        {
+            var tokens = antiForgery.GetAndStoreTokens(HttpContext);
+            return Ok(tokens.RequestToken);
+        }
 
 
         private void SetTokenCookie(string token)

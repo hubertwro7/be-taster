@@ -5,6 +5,7 @@ using Taster.Infrastructure.Persistence;
 using Taster.Application;
 using Taster.Infrastructure.Auth;
 using Taster.Api.Application.Auth;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Taster.Api
 {
@@ -37,7 +38,13 @@ namespace Taster.Api
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddDatabaseCache();
             builder.Services.AddSqlDatabase(builder.Configuration.GetConnectionString("MainDbSql")!);
-            builder.Services.AddControllers();
+            builder.Services.AddControllersWithViews(options =>
+            {
+                if(!builder.Environment.IsDevelopment())
+                {
+                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                }
+            });
             builder.Services.AddJwtAuth(builder.Configuration);
             builder.Services.AddJwtAuthenticationDataProvider(builder.Configuration);
             builder.Services.AddPasswordManager();
@@ -62,6 +69,11 @@ namespace Taster.Api
 
                     return name;
                 });
+            });
+
+            builder.Services.AddAntiforgery(x =>
+            {
+                x.HeaderName = "X-XSRF-TOKEN";
             });
 
             builder.Services.AddCors();
