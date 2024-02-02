@@ -68,6 +68,10 @@ namespace Taster.Application.Logic.User
 
                 RuleFor(x => x.Password).NotEmpty();
                 RuleFor(x => x.Password).MaximumLength(50);
+                RuleFor(x => x.Password).MinimumLength(8);
+                RuleFor(x => x.Password).Matches(@"[A-Z]+");
+                RuleFor(x => x.Password).Matches(@"[a-z]+");
+                RuleFor(x => x.Password).Matches(@"[0-9]+");
 
                 RuleFor(x => x.Username).NotEmpty();
                 RuleFor(x => x.Username).MaximumLength(20);
