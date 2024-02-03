@@ -31,11 +31,19 @@ namespace Taster.Application.Logic.User
 
             public async Task<Result> Handle(Request request, CancellationToken cancellationToken)
             {
-                var userExists = await applicationDbContext.Users.AnyAsync(x => x.Email == request.Email);
+                var userExists = applicationDbContext.Users.AnyAsync(x => x.Email == request.Email);
+                var usernameAlreadyTaken = applicationDbContext.Users.AnyAsync(y => y.Username == request.Username);
 
-                if (userExists)
+                await Task.WhenAll(userExists, usernameAlreadyTaken);
+
+
+                if (userExists.Result)
                 {
                     throw new ErrorException("User with this email already exists");
+                }
+                if(usernameAlreadyTaken.Result)
+                {
+                    throw new ErrorException("This username is already taken");
                 }
 
                 var utcNow = DateTime.UtcNow;
