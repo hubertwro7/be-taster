@@ -40,7 +40,7 @@ namespace Taster.Application.Logic.User
                 }
                 if(usernameAlreadyTaken)
                 {
-                    throw new ErrorException("This username is already taken");
+                    throw new ErrorException("User with this username already exists");
                 }
 
                 var utcNow = DateTime.UtcNow;
